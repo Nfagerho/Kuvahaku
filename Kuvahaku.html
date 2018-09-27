@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JQuerya</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        h1 {
+            color: #1b1840;
+            font-family: sans-serif;
+        }
+
+        body {
+            background-color: plum;
+        }
+        input[type=text] {
+            width: 130px;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.4s ease-in-out;
+        }
+        input[type=text]:focus {
+            width: 20%;
+        }
+
+
+
+    </style>
+
+<body>
+<h1>Nooan kuvahaku-sivusto</h1>
+<input type="text" id="nappi"  placeholder="Etsi kuvaa" value="">
+<button onclick="haedata()" id="buttoni"  style="visibility: visible;">Etsi</button>
+<div id="tulokset"></div>
+
+<script>
+    onchange=function haedata() {
+        $("#tulokset").empty();
+
+        $.getJSON('http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?', {
+            tags: $("#nappi").val(),
+            tagmode: "any",
+            format: "json"
+        }).done(function (data) {
+            console.dir(data);
+
+            $.each(data.items, function (indeksi, itemi) {
+                $("<img/>").attr("src", itemi.media.m).prependTo("#tulokset");
+            });
+
+        });
+    }
+
+</script>
+</body>
+</html>
